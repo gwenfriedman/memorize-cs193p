@@ -9,13 +9,24 @@ import SwiftUI
 
 struct ContentView: View {
     // type could  be Array<String> or [String]
-    var emojis = ["🚲", "🚚", "🛴", "✈️", "🚘", "🛳", "🚀", "🚁", "a", "b", "c", "d", "e", "f"]
     
-    @State var emojiCount: Int = 4
+    var vehicleEmojis = ["🚲", "🚚", "🛴", "✈️", "🚘", "🛳", "🚀", "🚁"]
+    var animalEmojis = ["🐶", "🐱", "🐭", "🦊", "🐼", "🐤", "🐸", "🐌", "🐝", "🐍", "🦀"]
+    
+    var flagEmojis = ["🏴‍☠️", "🏳️‍🌈", "🇨🇦", "🇬🇷", "🇯🇵", "🇳🇱", "🇺🇸", "🏁", "🇮🇱", "🇵🇼", "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "🇦🇸", "🇮🇪"]
+    
+    
+    
+    @State var emojis = ["🚲", "🚚", "🛴", "✈️", "🚘", "🛳", "🚀", "🚁"]
+    
+    
+    @State var emojiCount: Int = 8
     
     var body: some View {
         
         VStack{
+            Text("Memorize!")
+                .font(.title)
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
                     ForEach(emojis[0..<emojiCount], id: \.self) { emoji in
@@ -28,12 +39,32 @@ struct ContentView: View {
             .foregroundColor(/*@START_MENU_TOKEN@*/.red/*@END_MENU_TOKEN@*/)
             Spacer(minLength: 20)
             HStack{
-                remove
+                VStack{
+                    vehicle
+                    Text("vehicles")
+                        .font(.body)
+                        .foregroundColor(Color.blue)
+                }
                 
                 //will grab as much room as it can
                 Spacer()
                 
-                add
+                VStack{
+                    animal
+                    Text("animals")
+                        .font(.body)
+                        .foregroundColor(Color.blue)
+                }
+                
+                Spacer()
+                
+                VStack{
+                    flag
+                    Text("flags")
+                        .font(.body)
+                        .foregroundColor(Color.blue)
+                }
+                
             }
             .padding(.horizontal)
             .font(.largeTitle)
@@ -42,23 +73,30 @@ struct ContentView: View {
             
     }
     
-    var remove: some View {
+    var vehicle: some View {
         Button {
-            if emojiCount > 1 {
-                emojiCount -= 1
-            }
+            emojis = vehicleEmojis.shuffled()
+            emojiCount = emojis.count
         } label: {
-            Image(systemName: "minus.circle")
+            Image(systemName: "car")
         }
     }
     
-    var add: some View {
+    var animal: some View {
         Button {
-            if emojiCount < emojis.count {
-                emojiCount += 1
-            }
+            emojis = animalEmojis.shuffled()
+            emojiCount = emojis.count
         } label: {
-            Image(systemName: "plus.circle")
+            Image(systemName: "hare")
+        }
+    }
+    
+    var flag: some View {
+        Button {
+            emojis = flagEmojis.shuffled()
+            emojiCount = emojis.count
+        } label: {
+            Image(systemName: "flag")
         }
     }
 }
