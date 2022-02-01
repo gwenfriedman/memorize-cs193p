@@ -14,13 +14,15 @@ class EmojiMemoryGame : ObservableObject {
     //connection to the model
     //create its own model - not always the case for a ViewModel (ex when it's a database)
     
-    static func createMemoryGame(theme: Theme) -> MemoryGame<String> {
+    typealias Card = MemoryGame<String>.Card
+    
+    private static func createMemoryGame(theme: Theme) -> MemoryGame<String> {
         MemoryGame<String>(numberOfPairsOfCards: theme.numberOfPairs) { pairIndex in theme.emojis[pairIndex]}
     }
     
     //private - only the view model's code can see the model, protects the model from changes
     //private(set) - can look at the model, but can't change it
-    @Published private var model: MemoryGame<String>
+    @Published private var model = createMemoryGame(theme: themes[0])
     
     private(set) var theme: Theme
     
@@ -40,7 +42,7 @@ class EmojiMemoryGame : ObservableObject {
     ]
     
     //if model is private, use this - don't need if private(set)
-    var cards: Array<MemoryGame<String>.Card> {
+    var cards: Array<Card> {
         return model.cards
     }
     
@@ -80,7 +82,7 @@ class EmojiMemoryGame : ObservableObject {
     
     // MARK: - Intent(s)
     
-    func choose(_ card: MemoryGame<String>.Card) {
+    func choose(_ card: Card) {
         model.choose(card)
     }
 }
