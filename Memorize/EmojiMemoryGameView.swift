@@ -20,19 +20,14 @@ struct EmojiMemoryGameView: View {
                 Text("Score: \(game.score)")
             }
             
-            ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 75))]) {
-                    ForEach(game.cards) { card in
-                        CardView(card)
-                            .aspectRatio( 2/3, contentMode: .fit)
-                            .onTapGesture {
-                                //Intent to choose a card
-                                game.choose(card)
-                            }
-                
+            AspectVGrid(items: game.cards, aspectRatio: 2/3, content: { card in
+                CardView(card)
+                    .padding(4)
+                    .onTapGesture {
+                        //Intent to choose a card
+                        game.choose(card)
                     }
-                }
-            }
+            })
             .foregroundColor(game.color)
             .padding(.horizontal)
             
@@ -64,6 +59,7 @@ struct CardView: View {
                 //no way to stroke and fill a rounded rectangle
                     shape.fill().foregroundColor(.white)
                     shape.strokeBorder(lineWidth: DrawingConstants.lineWidth)
+                    Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 110-90)).padding(DrawingConstants.circlePadding).opacity(DrawingConstants.circleOpacity)
                     Text(card.content).font(font(in: geometry.size))
                 } else if card.isMatched {
                     shape.opacity(0)
@@ -79,9 +75,11 @@ struct CardView: View {
     }
     
     private struct DrawingConstants {
-        static let cornerRadius: CGFloat = 20
+        static let cornerRadius: CGFloat = 10
         static let lineWidth: CGFloat = 3
-        static let fontScale: CGFloat = 0.8
+        static let fontScale: CGFloat = 0.7
+        static let circlePadding: CGFloat = 6
+        static let circleOpacity: Double = 0.5
     }
 }
 
